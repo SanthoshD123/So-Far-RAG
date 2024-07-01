@@ -233,6 +233,7 @@
         <div class="rag-button" id="correctiveRagBtn">Corrective RAG</div>
         <div class="rag-button" id="selfRagBtn">Self-RAG</div>
         <div class="rag-button" id="agenticRagBtn">Agentic RAG</div>
+        <div class="rag-button" id="hippoRagBtn">HippoRAG</div>
       </div>
     </main>
     <button id="darkModeToggle">🌓</button>
@@ -514,11 +515,75 @@
       </div>
     </div>
 
+    <div id="hippoRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>HippoRAG</h2>
+        <p>
+          HippoRAG (Retrieval-Augmented Generation) is a novel framework
+          inspired by the neurobiology of human long-term memory. It aims to
+          enable large language models (LLMs) to continuously integrate
+          knowledge from external documents.
+        </p>
+        <h3>Key Features:</h3>
+        <ul>
+          <li>
+            Combines LLMs, knowledge graphs, and the Personalized PageRank
+            algorithm
+          </li>
+          <li>
+            Uses a schemaless knowledge graph as an artificial hippocampal index
+          </li>
+          <li>
+            Improves the ability of LLMs to integrate new experiences after
+            pre-training
+          </li>
+        </ul>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>Input Reception: The application receives user input.</li>
+          <li>Data Retrieval: Relevant data is fetched from a database.</li>
+          <li>
+            Prompt Generation: Retrieved data is injected into a prompt for the
+            LLM.
+          </li>
+          <li>
+            Response Generation: The LLM generates a contextually relevant
+            response.
+          </li>
+        </ol>
+        <h3>Use Cases:</h3>
+        <ul>
+          <li>Question-answering systems</li>
+          <li>Document retrieval and summarization</li>
+          <li>Basic chatbots for customer support</li>
+        </ul>
+        <h3>Advantages:</h3>
+        <ul>
+          <li>Improved accuracy compared to standalone LLMs</li>
+          <li>Ability to leverage up-to-date information without retraining</li>
+          <li>
+            Reduced hallucinations by grounding responses in retrieved data
+          </li>
+          <li>
+            Scalability as the knowledge base can be updated independently
+          </li>
+        </ul>
+        <p>
+          For more information and access to the code and data, visit the
+          <a href="https://github.com/OSU-NLP-Group/HippoRAG" target="_blank"
+            >HippoRAG GitHub repository</a
+          >.
+        </p>
+      </div>
+    </div>
+
     <footer>
       <div>
         Original content by:<br />
         Armand Ruiz<br />
-        VP of Product - AI Platform @IBM
+        VP of Product - AI Platform @IBM<br />
+        and Langchain
       </div>
       <div>
         Modified by:<br />
@@ -544,6 +609,7 @@
           "correctiveRagModal",
           "selfRagModal",
           "agenticRagModal",
+          "hippoRagModal",
         ];
 
         // Check for saved dark mode preference
