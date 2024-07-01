@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Innovative RAG Implementations</title>
+    <style>
+      :root {
+        --primary-color: #4caf50;
+        --secondary-color: #35a79c;
+        --bg-color: #f4f4f4;
+        --text-color: #333;
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        background-color: var(--secondary-color);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: var(--bg-color);
+        transform: skewY(-3deg);
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        flex-grow: 1;
+      }
+
+      .rag-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .rag-button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      .rag-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: var(--transition);
+        z-index: -1;
+      }
+
+      .rag-button:hover::before {
+        left: 100%;
+      }
+
+      .rag-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      #darkModeToggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .dark-mode {
+        --bg-color: #333;
+        --text-color: #f4f4f4;
+        --primary-color: #45a049;
+        --secondary-color: #2c8c84;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: var(--bg-color);
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      footer {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      footer a {
+        color: white;
+        text-decoration: none;
+        margin-left: 10px;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 1000px) {
+        .rag-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .rag-grid {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          padding: 1.5rem;
+        }
+
+        .rag-button {
+          font-size: 1rem;
+          padding: 1rem;
+        }
+
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        footer div {
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>RAG Implementations</h1>
+    </header>
+    <main>
+      <div class="rag-grid">
+        <div class="rag-button" id="simpleRagBtn">Simple RAG</div>
+        <div class="rag-button" id="ragMemoryBtn">RAG with Memory</div>
+        <div class="rag-button" id="branchedRagBtn">Branched RAG</div>
+        <div class="rag-button" id="hydeBtn">HyDE</div>
+        <div class="rag-button" id="adaptiveRagBtn">Adaptive RAG</div>
+        <div class="rag-button" id="correctiveRagBtn">Corrective RAG</div>
+        <div class="rag-button" id="selfRagBtn">Self-RAG</div>
+        <div class="rag-button" id="agenticRagBtn">Agentic RAG</div>
+      </div>
+    </main>
+    <button id="darkModeToggle">🌓</button>
+
+    <div id="simpleRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Simple RAG</h2>
+        <p>
+          Simple RAG (Retrieval-Augmented Generation) is the most
+          straightforward implementation of the RAG architecture. It combines
+          the power of a large language model (LLM) with a knowledge base to
+          generate more accurate and contextually relevant responses.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>Input Reception: The application receives user input.</li>
+          <li>
+            Data Retrieval: The input is used to fetch relevant data from a
+            database.
+          </li>
+          <li>
+            Prompt Generation: The retrieved data is injected into a prompt for
+            the LLM.
+          </li>
+          <li>
+            Response Generation: The LLM generates a response, which is returned
+            to the user.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Simple RAG is ideal for straightforward applications where user
+          queries directly relate to stored data. It's particularly effective in
+          scenarios such as:
+        </p>
+        <ul>
+          <li>Question-answering systems</li>
+          <li>Document retrieval and summarization</li>
+          <li>Basic chatbots for customer support</li>
+        </ul>
+        <h3>Advantages:</h3>
+        <ul>
+          <li>Improved accuracy compared to standalone LLMs</li>
+          <li>Ability to leverage up-to-date information without retraining</li>
+          <li>
+            Reduced hallucinations by grounding responses in retrieved data
+          </li>
+          <li>
+            Scalability as the knowledge base can be updated independently
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="ragMemoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>RAG with Memory</h2>
+        <p>
+          RAG with Memory extends the Simple RAG concept by maintaining context
+          from previous interactions, making it ideal for conversational AI
+          applications.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>
+            Input Reception and Memory Check: The application receives user
+            input and checks previous conversations.
+          </li>
+          <li>
+            Query Transformation: The query is transformed based on conversation
+            memory to include relevant context.
+          </li>
+          <li>
+            Data Retrieval and Prompt Generation: Similar to Simple RAG, with
+            added context for better relevance.
+          </li>
+          <li>
+            Response Generation: The LLM generates a contextually aware
+            response.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Suitable for applications where maintaining context over extended
+          interactions is crucial, such as customer support or conversational AI
+          assistants.
+        </p>
+      </div>
+    </div>
+
+    <div id="branchedRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Branched RAG</h2>
+        <p>
+          Branched RAG is a more sophisticated approach that determines which
+          data source(s) should be queried based on the input, allowing for
+          multi-domain knowledge retrieval.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>Input Reception: The application receives user input.</li>
+          <li>
+            Source Determination: Determines which data source(s) should be
+            queried based on the input.
+          </li>
+          <li>
+            Data Retrieval and Prompt Generation: Fetches data from the selected
+            source and generates a prompt for the LLM.
+          </li>
+          <li>
+            Response Generation: The LLM generates a response based on the
+            specific data source.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Effective in applications requiring data from multiple distinct
+          sources, such as research or multi-domain knowledge systems.
+        </p>
+      </div>
+    </div>
+
+    <div id="hydeModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>HyDE (Hypothetical Document Embedding)</h2>
+        <p>
+          HyDE is an innovative approach that generates a hypothetical answer to
+          improve the relevance of retrieved information.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>Input Reception: The application receives user input.</li>
+          <li>
+            Hypothetical Answer Generation: The LLM generates a hypothetical
+            answer to the query.
+          </li>
+          <li>
+            Data Retrieval: Uses the hypothetical answer to fetch relevant
+            documents from a similarity-based system, like a vector store.
+          </li>
+          <li>
+            Prompt Generation and Response: Generates a prompt with the fetched
+            documents and returns the LLM's response.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Useful when the query itself isn't sufficient for effective data
+          retrieval, enhancing the relevance of retrieved information.
+        </p>
+      </div>
+    </div>
+
+    <div id="adaptiveRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Adaptive RAG</h2>
+        <p>
+          Adaptive RAG combines query analysis with active/self-corrective RAG,
+          routing queries through different strategies based on their nature.
+        </p>
+        <h3>Implementation:</h3>
+        <ul>
+          <li>
+            Query Analysis: Determines the appropriate retrieval strategy (e.g.,
+            no retrieval, single-shot RAG, iterative RAG).
+          </li>
+          <li>
+            Strategy Execution: Executes the determined strategy, adjusting as
+            needed for optimal relevance and accuracy.
+          </li>
+        </ul>
+        <h3>Use Case:</h3>
+        <p>
+          Suitable for dynamic environments where queries vary widely, such as
+          search engines or AI assistants.
+        </p>
+      </div>
+    </div>
+
+    <div id="correctiveRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Corrective RAG (CRAG)</h2>
+        <p>
+          CRAG incorporates self-reflection and self-grading to enhance
+          retrieval accuracy.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>
+            Initial Retrieval: Retrieves documents based on the input query.
+          </li>
+          <li>
+            Knowledge Refinement: Partitions documents into "knowledge strips"
+            and grades each for relevance.
+          </li>
+          <li>
+            Supplementary Retrieval: If necessary, performs additional retrieval
+            using web search or other sources.
+          </li>
+          <li>
+            Prompt Generation and Response: Uses refined knowledge for prompt
+            generation and response.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Effective in high-stakes environments where accuracy is critical, such
+          as legal or medical applications.
+        </p>
+      </div>
+    </div>
+
+    <div id="selfRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Self-RAG</h2>
+        <p>
+          Self-RAG includes self-reflection and self-grading on both retrieved
+          documents and generated responses.
+        </p>
+        <h3>Workflow:</h3>
+        <ol>
+          <li>
+            Decision to Retrieve: Determines if retrieval is necessary based on
+            the input query and previous generations.
+          </li>
+          <li>
+            Relevance Check: Assesses the relevance of retrieved passages.
+          </li>
+          <li>
+            Generation Verification: Verifies that the LLM's generation is
+            supported by the retrieved documents.
+          </li>
+          <li>
+            Response Utility: Ensures the generated response is useful and
+            relevant.
+          </li>
+        </ol>
+        <h3>Use Case:</h3>
+        <p>
+          Ideal for applications requiring high reliability and minimal
+          hallucination, such as automated research assistants or knowledge base
+          systems.
+        </p>
+      </div>
+    </div>
+
+    <div id="agenticRagModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Agentic RAG</h2>
+        <p>
+          Agentic RAG is an advanced, agent-based approach to question answering
+          over multiple documents in a coordinated manner.
+        </p>
+        <h3>Key Components and Architecture:</h3>
+        <ul>
+          <li>
+            Document Agents: Each document is assigned a dedicated agent capable
+            of answering questions and summarizing within its own document.
+          </li>
+          <li>
+            Meta-Agent: A top-level agent manages all the document agents,
+            orchestrating their interactions and integrating their outputs to
+            generate a coherent and comprehensive response.
+          </li>
+        </ul>
+        <h3>Use Case:</h3>
+        <p>
+          Ideal for complex tasks requiring planning, multi-step reasoning, tool
+          use, and learning over time.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <div>
+        Original content by:<br />
+        Armand Ruiz<br />
+        VP of Product - AI Platform @IBM
+      </div>
+      <div>
+        Modified by:<br />
+        Santhosh D<br />
+        Transforming Ideas with AI<br />
+        <a href="https://www.linkedin.com/in/your-linkedin" target="_blank"
+          >LinkedIn</a
+        >
+        <a href="https://github.com/your-github" target="_blank">GitHub</a>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const darkModeToggle = document.getElementById("darkModeToggle");
+        const body = document.body;
+        const modalIds = [
+          "simpleRagModal",
+          "ragMemoryModal",
+          "branchedRagModal",
+          "hydeModal",
+          "adaptiveRagModal",
+          "correctiveRagModal",
+          "selfRagModal",
+          "agenticRagModal",
+        ];
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem("darkMode") === "true") {
+          body.classList.add("dark-mode");
+        }
+
+        // Dark mode toggle functionality
+        darkModeToggle.addEventListener("click", () => {
+          body.classList.toggle("dark-mode");
+          localStorage.setItem(
+            "darkMode",
+            body.classList.contains("dark-mode")
+          );
+        });
+
+        // Add hover effect to RAG buttons
+        const ragButtons = document.querySelectorAll(".rag-button");
+        ragButtons.forEach((button) => {
+          button.addEventListener("mouseenter", () => {
+            button.style.transform = "translateY(-5px) scale(1.05)";
+          });
+          button.addEventListener("mouseleave", () => {
+            button.style.transform = "translateY(0) scale(1)";
+          });
+        });
+
+        // Modal functionality
+        modalIds.forEach((modalId) => {
+          const modal = document.getElementById(modalId);
+          const btn = document.getElementById(modalId.replace("Modal", "Btn"));
+          const span = modal.querySelector(".close");
+
+          btn.onclick = function () {
+            modal.style.display = "block";
+          };
+
+          span.onclick = function () {
+            modal.style.display = "none";
+          };
+
+          window.onclick = function (event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          };
+        });
+      });
+    </script>
+  </body>
+</html>
