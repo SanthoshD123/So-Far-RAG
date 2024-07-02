@@ -174,8 +174,14 @@
         padding: 1rem;
         text-align: center;
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: space-around;
         align-items: center;
+      }
+
+      footer div {
+        flex: 1 1 300px;
+        margin: 0.5rem;
       }
 
       footer a {
@@ -197,6 +203,7 @@
       @media (max-width: 600px) {
         .rag-grid {
           grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
         header {
@@ -210,14 +217,73 @@
 
         footer {
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
         }
 
         footer div {
-          margin-bottom: 0.5rem;
+          margin-bottom: 1rem;
+        }
+        footer a,
+        footer a:link,
+        footer a:visited,
+        footer a:hover,
+        footer a:active,
+        footer a:focus {
+          color: white;
+          text-decoration: none !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          -webkit-tap-highlight-color: transparent;
+          display: inline-block;
+          margin-left: 15px;
+          transition: var(--transition);
+          position: relative;
+        }
+
+        footer a::after,
+        footer a:link::after,
+        footer a:visited::after,
+        footer a:hover::after,
+        footer a:active::after,
+        footer a:focus::after {
+          content: none !important;
+        }
+
+        footer a:hover,
+        footer a:focus,
+        footer a:active {
+          color: var(--primary-color);
+        }
+
+        footer .fab {
+          font-size: 1.5rem; /* Adjust this value as needed */
+        }
+
+        /* Additional reset for potential inherited styles */
+        footer a * {
+          text-decoration: none !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+
+        .social-links {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .social-links a {
+          margin: 0 10px;
+          font-size: 24px; /* Adjust this value to increase icon size */
         }
       }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <header>
@@ -585,14 +651,29 @@
         VP of Product - AI Platform @IBM<br />
         and Langchain
       </div>
+      <div>Last updated: July 2, 2024</div>
       <div>
         Modified by:<br />
         Santhosh D<br />
         Transforming Ideas with AI<br />
-        <a href="https://www.linkedin.com/in/santhosh-d-a58b69200?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"
-          >LinkedIn</a
-        >
-        <a href="https://github.com/SanthoshD123" target="_blank">GitHub</a>
+        <div class="social-links">
+          <a
+            href="https://www.linkedin.com/in/santhosh-d-a58b69200?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a
+            href="https://github.com/SanthoshD123"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
       </div>
     </footer>
 
