@@ -300,6 +300,8 @@
         <div class="rag-button" id="selfRagBtn">Self-RAG</div>
         <div class="rag-button" id="agenticRagBtn">Agentic RAG</div>
         <div class="rag-button" id="hippoRagBtn">HippoRAG</div>
+        <div id="multiHeadRagBtn" class="rag-button">Multi-Head RAG</div>
+        <div id="rankRagBtn" class="rag-button">RankRAG</div>
       </div>
     </main>
     <button id="darkModeToggle">🌓</button>
@@ -643,6 +645,82 @@
         </p>
       </div>
     </div>
+<div id="multiHeadRagModal" class="modal">
+    <div class="modal-content">
+        <span class="close">×</span>
+
+        <h2>Multi-Head RAG (MRAG)</h2>
+
+        <p>Multi-Head RAG is an innovative approach that leverages activations from the multi-head attention layer of decoder models to create more nuanced embeddings for complex, multi-aspect queries.</p>
+
+        <h3>Workflow:</h3>
+
+        <ol>
+            <li>Input Processing: Receives user input or query.</li>
+            <li>Multi-Aspect Embedding: Generates embeddings using multiple attention heads.</li>
+            <li>Retrieval: Fetches relevant documents based on multi-aspect embeddings.</li>
+            <li>Voting Strategy: Applies a special voting mechanism to rank retrieved documents.</li>
+            <li>Response Generation: Uses retrieved documents to generate a response.</li>
+        </ol>
+
+        <h3>Use Case:</h3>
+
+        <p>Particularly effective for queries requiring information from multiple documents with substantially different contents, such as:</p>
+
+        <ul>
+            <li>Complex research tasks</li>
+            <li>Multi-domain knowledge retrieval</li>
+            <li>Answering questions that span multiple topics or disciplines</li>
+        </ul>
+
+        <h3>Advantages:</h3>
+
+        <ul>
+            <li>Improved accuracy for multi-aspect queries (up to 20% over standard RAG)</li>
+            <li>No additional storage requirements compared to standard RAG</li>
+            <li>Can be integrated with existing RAG frameworks</li>
+            <li>Enhances retrieval of diverse, relevant information</li>
+        </ul>
+    </div>
+</div>
+
+<div id="rankRagModal" class="modal">
+    <div class="modal-content">
+        <span class="close">×</span>
+
+        <h2>RankRAG</h2>
+
+        <p>RankRAG is an advanced RAG implementation that combines context ranking and answer generation in a single fine-tuned Large Language Model (LLM).</p>
+
+        <h3>Workflow:</h3>
+
+        <ol>
+            <li>Query Reception: Receives user input.</li>
+            <li>Context Retrieval: Fetches potentially relevant contexts from the knowledge base.</li>
+            <li>Context Ranking: Uses the LLM to rank retrieved contexts for relevance.</li>
+            <li>Answer Generation: Generates a response using the most relevant contexts.</li>
+        </ol>
+
+        <h3>Use Case:</h3>
+
+        <p>Ideal for applications requiring high accuracy and efficiency in information retrieval and response generation, such as:</p>
+
+        <ul>
+            <li>Enterprise knowledge management systems</li>
+            <li>Advanced question-answering platforms</li>
+            <li>Domain-specific information retrieval (e.g., biomedical research)</li>
+        </ul>
+
+        <h3>Advantages:</h3>
+
+        <ul>
+            <li>Increased performance over specialized ranking models and baselines like GPT-4</li>
+            <li>Good generalization to new domains without specific fine-tuning</li>
+            <li>Efficient use of ranking data for improved context selection</li>
+            <li>Combines context ranking and answer generation in a single model</li>
+        </ul>
+    </div>
+</div>
 
     <footer>
       <div>
