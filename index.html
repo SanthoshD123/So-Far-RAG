@@ -757,70 +757,90 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const darkModeToggle = document.getElementById("darkModeToggle");
-        const body = document.body;
-        const modalIds = [
-          "simpleRagModal",
-          "ragMemoryModal",
-          "branchedRagModal",
-          "hydeModal",
-          "adaptiveRagModal",
-          "correctiveRagModal",
-          "selfRagModal",
-          "agenticRagModal",
-          "hippoRagModal",
-        ];
+  const darkModeToggle = document.getElementById("darkModeToggle");
+  const body = document.body;
+  const modalIds = [
+    "simpleRagModal",
+    "ragMemoryModal",
+    "branchedRagModal",
+    "hydeModal",
+    "adaptiveRagModal",
+    "correctiveRagModal",
+    "selfRagModal",
+    "agenticRagModal",
+    "hippoRagModal",
+    "multiHeadRagModal",  // Added Multi-Head RAG
+    "rankRagModal"        // Added RankRAG
+  ];
 
-        // Check for saved dark mode preference
-        if (localStorage.getItem("darkMode") === "true") {
-          body.classList.add("dark-mode");
-        }
+  // Check for saved dark mode preference
+  if (localStorage.getItem("darkMode") === "true") {
+    body.classList.add("dark-mode");
+  }
 
-        // Dark mode toggle functionality
-        darkModeToggle.addEventListener("click", () => {
-          body.classList.toggle("dark-mode");
-          localStorage.setItem(
-            "darkMode",
-            body.classList.contains("dark-mode")
-          );
-        });
+  // Dark mode toggle functionality
+  darkModeToggle.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    localStorage.setItem(
+      "darkMode",
+      body.classList.contains("dark-mode")
+    );
+  });
 
-        // Add hover effect to RAG buttons
-        const ragButtons = document.querySelectorAll(".rag-button");
-        ragButtons.forEach((button) => {
-          button.addEventListener("mouseenter", () => {
-            button.style.transform = "translateY(-5px) scale(1.05)";
-          });
-          button.addEventListener("mouseleave", () => {
-            button.style.transform = "translateY(0) scale(1)";
-          });
-        });
+  // Add hover effect to RAG buttons
+  const ragButtons = document.querySelectorAll(".rag-button");
+  ragButtons.forEach((button) => {
+    button.addEventListener("mouseenter", () => {
+      button.style.transform = "translateY(-5px) scale(1.05)";
+    });
+    button.addEventListener("mouseleave", () => {
+      button.style.transform = "translateY(0) scale(1)";
+    });
+  });
 
-        // Modal functionality
-        modalIds.forEach((modalId) => {
-          const modal = document.getElementById(modalId);
-          const btn = document.getElementById(modalId.replace("Modal", "Btn"));
-          const span = modal.querySelector(".close");
+  // Modal functionality
+  modalIds.forEach((modalId) => {
+    const modal = document.getElementById(modalId);
+    const btn = document.getElementById(modalId.replace("Modal", "Btn"));
+    const span = modal.querySelector(".close");
 
-          btn.onclick = function () {
-            modal.style.display = "block";
-          };
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
 
-          span.onclick = function () {
-            modal.style.display = "none";
-          };
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+  });
 
-          //close when click outside
-        window.onclick = function (event) {
-          modalIds.forEach((modalId) => {
-            const modal = document.getElementById(modalId);
-            if (event.target == modal) {
-              modal.style.display = "none";
-            }
-          });
-        };
-        });
-      });
+  // Close when click outside
+  window.onclick = function (event) {
+    modalIds.forEach((modalId) => {
+      const modal = document.getElementById(modalId);
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  };
+
+  // Specific functionality for Multi-Head RAG
+  const multiHeadRagBtn = document.getElementById("multiHeadRagBtn");
+  if (multiHeadRagBtn) {
+    multiHeadRagBtn.addEventListener("click", function() {
+      console.log("Multi-Head RAG button clicked");
+      // You can add any specific functionality here
+    });
+  }
+
+  // Specific functionality for RankRAG
+  const rankRagBtn = document.getElementById("rankRagBtn");
+  if (rankRagBtn) {
+    rankRagBtn.addEventListener("click", function() {
+      console.log("RankRAG button clicked");
+      // You can add any specific functionality here
+    });
+  }
+});
     </script>
   </body>
 </html>
